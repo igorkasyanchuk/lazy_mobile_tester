@@ -1,0 +1,169 @@
+<title>Lazy Mobile Tester :)</title>
+
+<style>
+  :root {
+    --toolbar-height: 26px;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+    background: #0f172a;
+    text-align: center;
+    font-family: Arial;
+  }
+
+  #lazy_mobile_tester_iframe {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    border: 0;
+    height: calc(100vh - var(--toolbar-height) - 10px);
+  }
+
+  #lazy_mobile_tester_panel {
+    margin: 0;
+    padding: 0;
+    padding: 2px 0;
+    width: 100%;
+    background: #334155;
+    height: var(--toolbar-height);
+    color: white;
+  }
+
+  #info {
+    color: white;
+    font-size: 12px;
+  }
+
+  #url {
+    width: 300px;
+  }
+
+  #copied {
+    visibility: hidden;
+    color: lime;
+    font-size: 12px;
+  }
+
+  button {
+    background: rgb(99, 102, 241);
+    color: white;
+    border: 0 none;
+    cursor: pointer;
+  }
+
+  button:disabled {
+    background: #333;
+    color: #999;
+    cursor: auto;
+  }
+
+  input {
+    font-size: 12px;
+  }
+</style>
+
+<script type="module">
+  import { Application, Controller } from "https://unpkg.com/@hotwired/stimulus/dist/stimulus.js"
+  window.Stimulus = Application.start()
+
+  Stimulus.register("toolbar", class extends Controller {
+    static targets = [ "iframe", "rotate_button", "info", "url", "copied" ]
+    static values = { rotated: {type: Boolean, default: false}, w: String, h: String, rotate: {type: Boolean, default: false} }
+
+    connect() {
+      this.paint();
+    }
+
+    screen({params}) {
+      this.wValue = params.w;
+      this.hValue = params.h;
+      this.rotateValue = params.rotate;
+      this.rotatedValue = false;
+      this.paint();
+    }
+
+    rotate() {
+      this.rotatedValue = !this.rotatedValue;
+      this.paint();
+    }
+
+    close() {
+      window.location.href = this.iframeTarget.contentWindow.location.href;
+    }
+
+    iframeonload() {
+      this.urlTarget.value = this.iframeTarget.contentWindow.location.href;
+      this.urlTarget.scrollLeft = this.urlTarget.scrollWidth;
+    }
+
+    size() {
+      if (this.rotatedValue && this.rotateValue) {
+        return { "w": this.hValue, "h": this.wValue }
+      } else {
+        return { "w": this.wValue, "h": this.hValue }
+      }
+    }
+
+    copy(event) {
+      if (this.urlTarget.value == "") {
+        return;
+      }
+
+      event.preventDefault()
+      this.urlTarget.select();
+      document.execCommand("copy");
+      this.copiedTarget.style.visibility = "visible";
+      setTimeout(() => {
+        this.copiedTarget.style.visibility = "hidden";
+      }, 800)
+    }
+
+    paint() {
+      const { w, h } = this.size();
+      this.iframeTarget.style.width = w;
+      this.iframeTarget.style.height = h;
+      this.rotate_buttonTarget.disabled = !this.rotateValue;
+
+      const { width, height } = this.iframeTarget.getBoundingClientRect();
+      this.infoTarget.innerHTML = parseInt(width) + "x" + parseInt(height)
+    }
+
+  })
+</script>
+
+<div data-controller="toolbar" id="lazy_mobile_tester">
+  <div id="lazy_mobile_tester_panel">
+    <input type='text' data-toolbar-target="url" id="url" readonly data-action="focus->toolbar#copy"/>
+    <span id="copied" data-toolbar-target="copied">Copied</span>
+    &nbsp;
+    &nbsp;
+    &nbsp;
+    <% LazyMobileTester.resolutions.each do |k, resolution| %>
+      <button data-action="click->toolbar#screen" data-toolbar-w-param="<%= resolution[:w] %>" data-toolbar-h-param="<%= resolution[:h] %>" data-toolbar-rotate-param="<%= resolution[:rotate] %>"><%= k %></button>
+    <% end %>
+    &nbsp;
+    &nbsp;
+    &nbsp;
+    <button data-action="click->toolbar#rotate" data-toolbar-target="rotate_button" disabled>&orarr; Rotate</button>
+    &nbsp;
+    &nbsp;
+    &nbsp;
+    <span data-toolbar-target="info" id="info"></span>
+    <!--
+    &nbsp;
+    &nbsp;
+    &nbsp;
+    URI: <%= @uri %>
+    &nbsp;
+    &nbsp;
+    &nbsp;
+    URL: <%= @url %>
+    -->
+    &nbsp;
+    &nbsp;
+    &nbsp;
+    <button data-action="click->toolbar#close">&cross; Close</button>
+  </div>
+  <iframe data-action="load->toolbar#iframeonload" data-toolbar-target="iframe" id="lazy_mobile_tester_iframe" frameborder="0" seamless="seamless" src="<%= @uri %>"></iframe>
+</div>
