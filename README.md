@@ -1,5 +1,10 @@
 # Lazy Mobile Tester
 
+[![RailsJazz](https://github.com/igorkasyanchuk/rails_time_travel/blob/main/docs/my_other.svg?raw=true)](https://www.railsjazz.com)
+[![https://www.patreon.com/igorkasyanchuk](https://github.com/igorkasyanchuk/rails_time_travel/blob/main/docs/patron.svg?raw=true)](https://www.patreon.com/igorkasyanchuk)
+
+![Demo](docs/lazy.gif)
+
 "Laziness is the mother of progress" :)
 
 We all know that we can use Chrome Dev Tools to check how app looks on a different resolutions.
@@ -20,7 +25,7 @@ There are two ways how to use it:
     <%= lazy_mobile_tester_button if defined?(LazyMobileTester) %>
 ```
 
-2) add a parameter to any URL `?_lazy=1` and open it. For example - `instead of /users just open /users??_lazy=1`
+2) add a parameter to any URL `?_lazy=1` and open it. For example - `instead of /users just open /users?_lazy=1`
 
 
 ## Installation
