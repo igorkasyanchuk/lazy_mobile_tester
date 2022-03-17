@@ -58,6 +58,10 @@
     cursor: auto;
   }
 
+  #close_button {
+    background: red;
+  }
+
   input {
     font-size: 12px;
   }
@@ -80,6 +84,11 @@
       this.hValue = params.h;
       this.rotateValue = params.rotate;
       this.rotatedValue = false;
+
+      const { w, h } = this.size();
+      localStorage.w = w;
+      localStorage.h = h;
+
       this.paint();
     }
 
@@ -121,8 +130,8 @@
 
     paint() {
       const { w, h } = this.size();
-      this.iframeTarget.style.width = w;
-      this.iframeTarget.style.height = h;
+      this.iframeTarget.style.width = (localStorage.getItem("w") === null) ? w : localStorage.w;;
+      this.iframeTarget.style.height = (localStorage.getItem("h") === null) ? h : localStorage.h;;
       this.rotate_buttonTarget.disabled = !this.rotateValue;
 
       const { width, height } = this.iframeTarget.getBoundingClientRect();
@@ -163,7 +172,7 @@
     &nbsp;
     &nbsp;
     &nbsp;
-    <button data-action="click->toolbar#close">&cross; Close</button>
+    <button data-action="click->toolbar#close" id="close_button">&cross; Close</button>
   </div>
   <iframe data-action="load->toolbar#iframeonload" data-toolbar-target="iframe" id="lazy_mobile_tester_iframe" frameborder="0" seamless="seamless" src="<%= @uri %>"></iframe>
 </div>

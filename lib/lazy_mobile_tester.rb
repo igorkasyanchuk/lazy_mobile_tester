@@ -40,10 +40,11 @@ module LazyMobileTester
   @@style = %s(
     position: absolute;
     left: 0;
-    right: 0;
+    top: 0;
     z-index: 99999;
+    padding: 2px;
     font-size: 8px;
-    background: rgb(99, 102, 241);
+    background: #6f7dba;
     color: white;
     border: 0 none;
     border-bottom-right-radius: 6px;

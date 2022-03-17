@@ -4,8 +4,6 @@ module LazyMobileTester
 
     initializer "lazy_mobile_tester.middleware" do |app|
       next unless LazyMobileTester.enabled
-      #app.middleware.use LazyMobileTester::Middleware
-      #ActionDispatch::Executor
       app.middleware.insert_before  ActionDispatch::HostAuthorization, LazyMobileTester::Middleware
     end
 
