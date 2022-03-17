@@ -1,10 +1,30 @@
-# LazyMobileTester
-Short description and motivation.
+# Lazy Mobile Tester
+
+"Laziness is the mother of progress" :)
+
+We all know that we can use Chrome Dev Tools to check how app looks on a different resolutions.
+
+But opening this tool, clicking, changing resolutions... It's just too many actions. 
+
+I'm as developer want an easy way to check how webpage looks on a different resolutions. With a simple click.
+
+This is why I've created a simple gem which opens webpage in iframe and allows you to change width of it.
 
 ## Usage
-How to use my plugin.
+
+There are two ways how to use it:
+
+1) with button in top left corner to open page in IFRAME. To do this add in your layout inside body tag:
+
+```erb
+    <%= lazy_mobile_tester_button if defined?(LazyMobileTester) %>
+```
+
+2) add a parameter to any URL `?_lazy=1` and open it. For example - `instead of /users just open /users??_lazy=1`
+
 
 ## Installation
+
 Add this line to your application's Gemfile:
 
 ```ruby
@@ -16,13 +36,15 @@ And then execute:
 $ bundle
 ```
 
-Or install it yourself as:
-```bash
-$ gem install lazy_mobile_tester
-```
-
 ## Contributing
-Contribution directions go here.
+
+You are welcome to contribute.
+
+## TODO
+
+- tests?
+- any other ideas?
 
 ## License
+
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
