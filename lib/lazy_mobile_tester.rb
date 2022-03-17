@@ -15,7 +15,7 @@ module LazyMobileTester
       rotate: true,
     },
     "SM" => {
-      w: "390px",
+      w: "576px",
       h: "844px",
       rotate: true,
     },
@@ -26,6 +26,11 @@ module LazyMobileTester
     },
     "LG" => {
       w: "1280px",
+      h: "calc(100vh - var(--toolbar-height) - 10px)",
+      rotate: false,
+    },
+    "XL" => {
+      w: "1400px",
       h: "calc(100vh - var(--toolbar-height) - 10px)",
       rotate: false,
     },

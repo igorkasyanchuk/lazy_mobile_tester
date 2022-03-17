@@ -76,6 +76,10 @@
     static values = { rotated: {type: Boolean, default: false}, w: String, h: String, rotate: {type: Boolean, default: false} }
 
     connect() {
+      if(localStorage.getItem("rotateValue") !== null && localStorage.getItem("rotatedValue") !== null) {
+        this.rotateValue = localStorage.getItem("rotateValue");
+        this.rotatedValue = localStorage.getItem("rotatedValue");
+      }
       this.paint();
     }
 
@@ -85,15 +89,21 @@
       this.rotateValue = params.rotate;
       this.rotatedValue = false;
 
+      this.storeSize();
+      this.paint();
+    }
+
+    storeSize() {
       const { w, h } = this.size();
       localStorage.w = w;
       localStorage.h = h;
-
-      this.paint();
+      localStorage.rotateValue = this.rotateValue;
+      localStorage.rotatedValue = this.rotatedValue;
     }
 
     rotate() {
       this.rotatedValue = !this.rotatedValue;
+      this.storeSize();
       this.paint();
     }
 
@@ -130,8 +140,8 @@
 
     paint() {
       const { w, h } = this.size();
-      this.iframeTarget.style.width = (localStorage.getItem("w") === null) ? w : localStorage.w;;
-      this.iframeTarget.style.height = (localStorage.getItem("h") === null) ? h : localStorage.h;;
+      this.iframeTarget.style.width = (localStorage.getItem("w") === null) ? w : localStorage.w;
+      this.iframeTarget.style.height = (localStorage.getItem("h") === null) ? h : localStorage.h;
       this.rotate_buttonTarget.disabled = !this.rotateValue;
 
       const { width, height } = this.iframeTarget.getBoundingClientRect();
