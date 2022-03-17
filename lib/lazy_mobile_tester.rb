@@ -51,6 +51,7 @@ module LazyMobileTester
     font-size: 8px;
     background: #6f7dba;
     color: white;
+    cursor: pointer;
     border: 0 none;
     border-bottom-right-radius: 6px;
   )
